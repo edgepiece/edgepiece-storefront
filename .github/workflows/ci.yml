@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Least privilege: this workflow only needs to read the repo.
+permissions:
+  contents: read
+
+jobs:
+  build-and-smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Build image
+        run: docker build -t edgepiece-storefront:ci .
+
+      - name: Start container
+        run: docker run -d --name storefront -p 8080:8080 edgepiece-storefront:ci
+
+      - name: Smoke test (expect HTTP 200 and our page)
+        run: |
+          for i in $(seq 1 10); do
+            if curl -fsS http://localhost:8080 -o page.html; then
+              grep -q "<title>Edgepiece</title>" page.html && echo "OK: page served" && exit 0
+              echo "Page served but title missing" && exit 1
+            fi
+            echo "Attempt $i: not ready yet"; sleep 1
+          done
+          echo "Container never became ready"; exit 1
+
+      - name: Show container logs on failure
+        if: failure()
+        run: docker logs storefront
