@@ -1,0 +1,33 @@
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  color: #222;
+  background: #faf8f5;
+}
+
+header, main, footer {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+}
+
+/* A grid that fits as many 200px+ columns as the screen allows. */
+.catalogue {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+}
+
+.item .image {
+  aspect-ratio: 4 / 3;
+  background: var(--tint);
+  border-radius: 8px;
+}
+
+.item h3 { margin: 0.5rem 0 0.25rem; }
+.item p  { margin: 0.25rem 0; }
+.price   { font-weight: bold; }
+
+footer { color: #666; font-size: 0.9rem; }
