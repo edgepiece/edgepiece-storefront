@@ -11,7 +11,6 @@ header, main, footer {
   padding: 1rem 1.5rem;
 }
 
-/* A grid that fits as many 200px+ columns as the screen allows. */
 .catalogue {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

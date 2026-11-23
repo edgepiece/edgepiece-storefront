@@ -5,19 +5,18 @@ on:
     branches: [main]
   pull_request:
 
-# Least privilege: this workflow only needs to read the repo.
+# Read-only repository access.
 permissions:
   contents: read
 
 jobs:
-  # Cheap static checks first: fail in seconds, before spending time on a build.
   lint:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      # Images are pinned by digest (content hash), not by mutable tag.
+      # Pinned by digest.
       - name: Lint Dockerfile (hadolint)
         run: docker run --rm -i hadolint/hadolint@sha256:32dac94127fd60b7b7e3fbfc65e1383b9b5e25c9bfd7b8536de7a539fe68a12d < Dockerfile # v2.15.1
 
@@ -37,7 +36,7 @@ jobs:
       - name: Start container
         run: docker run -d --name storefront -p 8080:8080 edgepiece-storefront:ci
 
-      - name: Smoke test (expect HTTP 200 and our page)
+      - name: Smoke test
         run: |
           for i in $(seq 1 10); do
             if curl -fsS http://localhost:8080 -o page.html; then

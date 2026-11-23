@@ -1,9 +1,6 @@
-# Base image: nginx that runs as a non-root user and listens on 8080.
-# Pinned to a minor version so builds are repeatable (no floating tags).
+# Unprivileged nginx (UID 101), port 8080. Pinned to minor version 1.28.
 FROM nginxinc/nginx-unprivileged:1.28-alpine
 
-# Copy our site into the folder nginx serves files from.
 COPY site/ /usr/share/nginx/html/
 
-# Documentation only: tells readers the container listens on 8080.
 EXPOSE 8080
