@@ -80,7 +80,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEAD_REF: ${{ github.head_ref }}
-        run: npx semantic-release --dry-run --no-ci --branches "$HEAD_REF"
+        # Presents the PR branch as a push so semantic-release runs the full analysis.
+        run: env GITHUB_EVENT_NAME=push GITHUB_REF="refs/heads/$HEAD_REF" npx semantic-release --dry-run --branches "$HEAD_REF"
 
   release:
     needs: [lint, build-and-smoke-test]
