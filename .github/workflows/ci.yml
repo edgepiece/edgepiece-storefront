@@ -71,6 +71,9 @@ jobs:
       - name: Install release tooling
         run: npm ci --ignore-scripts
 
+      - name: Check release notes render
+        run: node scripts/check-release-notes.mjs
+
       - name: Check out PR branch
         env:
           HEAD_REF: ${{ github.head_ref }}
